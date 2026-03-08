@@ -96,4 +96,21 @@ public class ConfigurationHandler {
     public static String getHighlightColor() {
         return getInstance().matchHighlightColor;
     }
+
+    public static void setAllOptions(boolean extraLargeChests, boolean halfSizeButtons,
+                                     boolean toneDownButtons, boolean enableSearch,
+                                     String highlightColor) {
+        ConfigurationHandler inst = getInstance();
+        inst.extraLargeChests    = extraLargeChests;
+        inst.halfSizeButtons     = halfSizeButtons;
+        inst.toneDownButtons     = toneDownButtons;
+        inst.enableSearch        = enableSearch;
+        inst.matchHighlightColor = highlightColor;
+        inst.config.setProperty("easierchests.config.largechests",  Boolean.toString(extraLargeChests));
+        inst.config.setProperty("easierchests.config.halfsize",     Boolean.toString(halfSizeButtons));
+        inst.config.setProperty("easierchests.config.transparent",  Boolean.toString(toneDownButtons));
+        inst.config.setProperty("easierchests.config.enablesearch", Boolean.toString(enableSearch));
+        inst.config.setProperty("easierchests.config.highlight",    highlightColor);
+        inst.save();
+    }
 }
