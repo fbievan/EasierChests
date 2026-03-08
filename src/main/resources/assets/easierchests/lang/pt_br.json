@@ -1,5 +1,5 @@
 {
-    "key.categories.easierchests": "EasierChests",
+    "key.category.easierchests.key_categories": "EasierChests",
     "easierchests.sortchest": "Sort chest",
     "easierchests.sortplayer": "Sort inventory",
     "easierchests.matchdown": "Move matches to player",

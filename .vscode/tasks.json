@@ -1,0 +1,141 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "inspect-jar",
+            "type": "shell",
+            "command": "jar xf /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-screen-api-v1/3.1.7+4ebb5c083e/fb2659216e9f03d5e595c28ad8929b363283af62/fabric-screen-api-v1-3.1.7+4ebb5c083e-sources.jar -C /tmp/fabric-screen-sources 2>/dev/null || (mkdir -p /tmp/fabric-screen-sources && cd /tmp/fabric-screen-sources && jar xf /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-screen-api-v1/3.1.7+4ebb5c083e/fb2659216e9f03d5e595c28ad8929b363283af62/fabric-screen-api-v1-3.1.7+4ebb5c083e-sources.jar && echo done)",
+            "problemMatcher": []
+        },
+        {
+            "label": "find-classes",
+            "type": "shell",
+            "command": "find /tmp/fabric-screen-sources -name '*.java' 2>/dev/null && echo '---' && find /tmp/fabric-screen-sources -type f 2>/dev/null | head -20",
+            "problemMatcher": []
+        },
+        {
+            "label": "javap-category",
+            "type": "shell",
+            "command": "cd /tmp && javap -c net/minecraft/client/option/KeyBinding\\$Category.class 2>&1 | head -60",
+            "problemMatcher": []
+        },
+        {
+            "label": "update-lang-keys",
+            "type": "shell",
+            "command": "find /workspaces/EasierChests/src/main/resources/assets/easierchests/lang -name '*.json' -exec sed -i 's/key\\.categories\\.easierchests/key.category.easierchests.key_categories/g' {} \\; && echo done && grep -r 'key.categor' /workspaces/EasierChests/src/main/resources/assets/easierchests/lang/ | head -5",
+            "problemMatcher": []
+        },
+        {
+            "label": "javap-category-full",
+            "type": "shell",
+            "command": "cd /tmp && javap -p -verbose net/minecraft/client/option/KeyBinding\\$Category.class 2>&1 | grep -A 15 'private.*create'",
+            "problemMatcher": []
+        },
+        {
+            "label": "javap-identifier",
+            "type": "shell",
+            "command": "cd /tmp && jar xf /workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar net/minecraft/util/Identifier.class && javap -p -c net/minecraft/util/Identifier.class 2>&1 | grep -A 20 'toTranslationKey'",
+            "problemMatcher": []
+        },
+        {
+            "label": "javap-category-getlabel",
+            "type": "shell",
+            "command": "cd /tmp && javap -p -verbose net/minecraft/client/option/KeyBinding\\$Category.class 2>&1 | grep -A 50 'getLabel' | head -80",
+            "problemMatcher": []
+        },
+        {
+            "label": "find-mappings2",
+            "type": "shell",
+            "command": "find /workspaces/EasierChests/.gradle -name '*.tiny' 2>/dev/null | head -5 && find /home/codespace/.gradle -name '*.tiny' 2>/dev/null | head -5 && find /workspaces/EasierChests/.gradle/loom-cache -type f -name '*.jar' | head -20",
+            "problemMatcher": []
+        },
+        {
+            "label": "find-mappings",
+            "type": "shell",
+            "command": "find /workspaces/EasierChests/.gradle/loom-cache -name '*.tiny' 2>/dev/null | head -10 && find /workspaces/EasierChests/.gradle/loom-cache -name '*mappings*' 2>/dev/null | head -10",
+            "problemMatcher": []
+        },
+        {
+            "label": "find-yarn-mappings",
+            "type": "shell",
+            "command": "find /home/codespace/.gradle/caches -name 'yarn-*-mergedv2.jar' 2>/dev/null | head -5 && find /workspaces/EasierChests/.gradle -name '*.jar' 2>/dev/null | grep -i yarn | head -5",
+            "problemMatcher": []
+        },
+        {
+            "label": "lookup-class-names",
+            "type": "shell",
+            "command": "MAPPINGS=$(find /home/codespace/.gradle/caches -name 'yarn-*-mergedv2.jar' 2>/dev/null | head -1) && echo \"Using: $MAPPINGS\" && jar tf $MAPPINGS | grep -i 'mappings' | head -5 && mkdir -p /tmp/yarntmp && cd /tmp/yarntmp && jar xf $MAPPINGS mappings/mappings.tiny && grep -E 'CLASS\\s.*(class_9095|class_9147)' mappings/mappings.tiny | head -5",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-handledscreen-full",
+            "type": "shell",
+            "command": "cd /tmp && jar xf /workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar net/minecraft/client/gui/screen/ingame/HandledScreen.class && javap -p net/minecraft/client/gui/screen/ingame/HandledScreen.class | grep -E 'drawSlot|render|mouseClicked|keyPressed' | head -20",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-mixin-targets",
+            "type": "shell",
+            "command": "MC_JAR=/workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar && cd /tmp && jar xf $MC_JAR net/minecraft/client/gui/screen/ingame/HandledScreens.class net/minecraft/client/network/ClientPlayNetworkHandler.class net/minecraft/network/packet/c2s/play/ClickSlotC2SPacket.class net/minecraft/network/packet/s2c/play/InventoryS2CPacket.class 2>&1 && echo '=== HandledScreens ===' && javap -p net/minecraft/client/gui/screen/ingame/HandledScreens.class && echo '=== ClientPlayNetworkHandler (partial) ===' && javap -p net/minecraft/client/network/ClientPlayNetworkHandler.class | grep -E 'onInventory|static|class' | head -20 && echo '=== ClickSlotC2SPacket ===' && javap -p net/minecraft/network/packet/c2s/play/ClickSlotC2SPacket.class && echo '=== InventoryS2CPacket ===' && javap -p net/minecraft/network/packet/s2c/play/InventoryS2CPacket.class",
+            "problemMatcher": []
+        },
+        {
+            "label": "check-classes",
+            "type": "shell",
+            "command": "find /workspaces/EasierChests/build/classes -name '*.class' 2>/dev/null | head -20 && echo '---' && ls /workspaces/EasierChests/build/classes/java/main/de/guntram/mcmod/easierchests/ 2>/dev/null",
+            "problemMatcher": []
+        },
+        {
+            "label": "find-java",
+            "type": "shell",
+            "command": "which java && java -version && ls /usr/lib/jvm/ 2>/dev/null && ls /usr/local/lib/jvm/ 2>/dev/null && echo $JAVA_HOME",
+            "problemMatcher": []
+        },
+        {
+            "label": "gradle-build",
+            "type": "shell",
+            "command": "cd /workspaces/EasierChests && JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 gradle clean compileJava 2>&1 | tail -120",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "inspect-keyboard-events",
+            "type": "shell",
+            "command": "cat /tmp/screen-sources/net/fabricmc/fabric/api/client/screen/v1/ScreenKeyboardEvents.java 2>&1",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-keybinding-helper",
+            "type": "shell",
+            "command": "cd /tmp && mkdir -p keybinding-sources && cd keybinding-sources && jar xf /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-key-binding-api-v1/1.1.7+4fc5413f3e/$(ls /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-key-binding-api-v1/1.1.7+4fc5413f3e/ | grep sources)/$(ls /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-key-binding-api-v1/1.1.7+4fc5413f3e/$(ls /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-key-binding-api-v1/1.1.7+4fc5413f3e/ | grep sources)/) && find /tmp/keybinding-sources -name '*.java' | head -20 && cat /tmp/keybinding-sources/net/fabricmc/fabric/api/client/keybinding/v1/KeyBindingHelper.java 2>&1",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-click-class",
+            "type": "shell",
+            "command": "cd /tmp && jar xf /workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar net/minecraft/client/gui/Click.class net/minecraft/client/input/KeyInput.class net/minecraft/client/input/CharInput.class net/minecraft/client/gl/RenderPipelines.class && javap -p net/minecraft/client/gui/Click.class && echo '---' && javap -p net/minecraft/client/input/KeyInput.class && echo '---' && javap -p net/minecraft/client/gl/RenderPipelines.class 2>&1",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-mc-jar2",
+            "type": "shell",
+            "command": "jar tf /workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar | grep -E 'mojang.blaze3d|RenderPipeline' | head -80",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-mc-jar3",
+            "type": "shell",
+            "command": "jar tf /workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar | grep -E 'client/option/Key|client/gui/nav|input' | head -80",
+            "problemMatcher": []
+        },
+        {
+            "label": "extract-screen-api",
+            "type": "shell",
+            "command": "mkdir -p /tmp/screen-api-sources && cd /tmp/screen-api-sources && jar xf /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-screen-api-v1/3.1.7+4ebb5c083e/fb2659216e9f03d5e595c28ad8929b363283af62/fabric-screen-api-v1-3.1.7+4ebb5c083e-sources.jar && echo extraction_done && find /tmp/screen-api-sources -name '*.java' | head -20",
+            "problemMatcher": []
+        }
+    ]
+}
