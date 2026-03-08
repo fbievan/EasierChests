@@ -1,7 +1,5 @@
 This is a ported version of [easierchests](https://github.com/gbl/EasierChests), to version 1.21.11.
 
-This is AI Slop, Be warned.
-
 I am not responsible for any damage caused to your computer :3. 
 
 
