@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class ConfigScreen extends Screen {
 
@@ -35,74 +36,99 @@ public class ConfigScreen extends Screen {
             highlightColor = colorField.getText();
         }
 
-        int cx = this.width / 2;
-        int startY = 40;
-        int rowH = 25;
+        int cx    = this.width / 2;
+        int startY = 48;
+        int rowH   = 26;
+        // Labels start at cx-130; controls start at cx+60 (190px gap for labels)
+        int ctrlX  = cx + 60;
+        int ctrlW  = 70;
 
+        // Row 0 – Allow Extra Large Chests
         addDrawableChild(ButtonWidget.builder(
-                toggleText("easierchests.config.largechests", extraLargeChests),
+                onOffText(extraLargeChests),
                 btn -> {
                     extraLargeChests = !extraLargeChests;
-                    btn.setMessage(toggleText("easierchests.config.largechests", extraLargeChests));
+                    btn.setMessage(onOffText(extraLargeChests));
                 })
-            .dimensions(cx - 100, startY, 200, 20)
+            .dimensions(ctrlX, startY, ctrlW, 20)
             .build());
 
+        // Row 1 – Half Button Size
         addDrawableChild(ButtonWidget.builder(
-                toggleText("easierchests.config.halfsize", halfSizeButtons),
+                onOffText(halfSizeButtons),
                 btn -> {
                     halfSizeButtons = !halfSizeButtons;
-                    btn.setMessage(toggleText("easierchests.config.halfsize", halfSizeButtons));
+                    btn.setMessage(onOffText(halfSizeButtons));
                 })
-            .dimensions(cx - 100, startY + rowH, 200, 20)
+            .dimensions(ctrlX, startY + rowH, ctrlW, 20)
             .build());
 
-        addDrawableChild(ButtonWidget.builder(
-                toggleText("easierchests.config.transparent", toneDownButtons),
-                btn -> {
-                    toneDownButtons = !toneDownButtons;
-                    btn.setMessage(toggleText("easierchests.config.transparent", toneDownButtons));
-                })
-            .dimensions(cx - 100, startY + rowH * 2, 200, 20)
-            .build());
-
-        addDrawableChild(ButtonWidget.builder(
-                toggleText("easierchests.config.enablesearch", enableSearch),
-                btn -> {
-                    enableSearch = !enableSearch;
-                    btn.setMessage(toggleText("easierchests.config.enablesearch", enableSearch));
-                })
-            .dimensions(cx - 100, startY + rowH * 3, 200, 20)
-            .build());
-
-        // Color input (ARGB hex, e.g. "4000ff00")
+        // Row 2 – Highlight Color (text field)
         colorField = new TextFieldWidget(
-                textRenderer, cx - 100, startY + rowH * 4 + 14, 200, 20,
+                textRenderer, ctrlX, startY + rowH * 2, ctrlW, 20,
                 Text.translatable("easierchests.config.highlight"));
         colorField.setText(highlightColor);
         colorField.setMaxLength(8);
         addDrawableChild(colorField);
 
+        // Row 3 – Transparent Buttons
+        addDrawableChild(ButtonWidget.builder(
+                onOffText(toneDownButtons),
+                btn -> {
+                    toneDownButtons = !toneDownButtons;
+                    btn.setMessage(onOffText(toneDownButtons));
+                })
+            .dimensions(ctrlX, startY + rowH * 3, ctrlW, 20)
+            .build());
+
+        // Row 4 – Enable Search
+        addDrawableChild(ButtonWidget.builder(
+                onOffText(enableSearch),
+                btn -> {
+                    enableSearch = !enableSearch;
+                    btn.setMessage(onOffText(enableSearch));
+                })
+            .dimensions(ctrlX, startY + rowH * 4, ctrlW, 20)
+            .build());
+
+        // Done
         addDrawableChild(ButtonWidget.builder(Text.translatable("gui.done"), btn -> close())
-            .dimensions(cx - 100, startY + rowH * 5 + 22, 200, 20)
+            .dimensions(cx - 50, startY + rowH * 5 + 10, 100, 20)
             .build());
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
+
+        int cx     = this.width / 2;
+        int startY = 48;
+        int rowH   = 26;
+        int labelX = cx - 130;
+        int labelColor = 0xFFFFFFFF;
+
         // Title
         context.drawText(textRenderer, title,
-                (this.width - textRenderer.getWidth(title)) / 2, 15, 0xFFFFFF, true);
-        // Label above color field
-        context.drawText(textRenderer, Text.translatable("easierchests.config.highlight"),
-                this.width / 2 - 100, 40 + 25 * 4 + 2, 0xA0A0A0, false);
+                (this.width - textRenderer.getWidth(title)) / 2, 15, labelColor, true);
+
+        // Row labels (vertically centred: +6 offset inside a 20px row)
+        context.drawText(textRenderer, Text.translatable("easierchests.config.largechests"),  labelX, startY + 6,           labelColor, true);
+        context.drawText(textRenderer, Text.translatable("easierchests.config.halfsize"),     labelX, startY + rowH + 6,    labelColor, true);
+        context.drawText(textRenderer, Text.translatable("easierchests.config.highlight"),    labelX, startY + rowH * 2 + 6, labelColor, true);
+        context.drawText(textRenderer, Text.translatable("easierchests.config.transparent"),  labelX, startY + rowH * 3 + 6, labelColor, true);
+        context.drawText(textRenderer, Text.translatable("easierchests.config.enablesearch"), labelX, startY + rowH * 4 + 6, labelColor, true);
+    }
+
+    private Text onOffText(boolean value) {
+        return Text.translatable(value ? "easierchests.config.true" : "easierchests.config.false")
+                .formatted(value ? Formatting.GREEN : Formatting.RED);
     }
 
     private Text toggleText(String key, boolean value) {
         return Text.translatable(key)
                 .append(Text.literal(": "))
-                .append(Text.translatable(value ? "options.on" : "options.off"));
+                .append(Text.translatable(value ? "options.on" : "options.off")
+                        .formatted(value ? Formatting.GREEN : Formatting.RED));
     }
 
     @Override

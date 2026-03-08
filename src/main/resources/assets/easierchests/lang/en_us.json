@@ -1,5 +1,7 @@
 {   
     "easierchests.config.title": "EasierChests Settings",
+    "easierchests.config.true": "true",
+    "easierchests.config.false": "false",
     "key.category.easierchests.key_categories":"EasierChests",
     "easierchests.sortchest" : "Sort chest",
     "easierchests.sortplayer": "Sort inventory",
