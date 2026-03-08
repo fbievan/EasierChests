@@ -86,6 +86,30 @@
             "problemMatcher": []
         },
         {
+            "label": "inspect-handledscreen-render",
+            "type": "shell",
+            "command": "cd /tmp && javap -p -c net/minecraft/client/gui/screen/ingame/HandledScreen.class 2>&1 | grep -A 40 'public void render' | head -50",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-recipebook-render",
+            "type": "shell",
+            "command": "cd /tmp && javap -p -c net/minecraft/client/gui/screen/ingame/RecipeBookScreen.class 2>&1 | grep -A 60 'public void render'",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-recipebook-screen",
+            "type": "shell",
+            "command": "MC_JAR=/workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar && cd /tmp && jar xf $MC_JAR net/minecraft/client/gui/screen/ingame/RecipeBookScreen.class net/minecraft/client/gui/screen/ingame/AbstractRecipeBookScreen.class 2>&1 && echo '=== RecipeBookScreen ===' && javap -p net/minecraft/client/gui/screen/ingame/RecipeBookScreen.class | head -10 && echo '=== AbstractRecipeBookScreen ===' && javap -p net/minecraft/client/gui/screen/ingame/AbstractRecipeBookScreen.class | head -10 && echo '=== InventoryScreen render bytecode ===' && javap -p -c net/minecraft/client/gui/screen/ingame/InventoryScreen.class | grep -A 60 'public void render'",
+            "problemMatcher": []
+        },
+        {
+            "label": "inspect-inventory-screens",
+            "type": "shell",
+            "command": "MC_JAR=/workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar && cd /tmp && jar xf $MC_JAR net/minecraft/client/gui/screen/ingame/InventoryScreen.class net/minecraft/client/gui/screen/ingame/AbstractInventoryScreen.class net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen.class 2>&1 && echo '=== InventoryScreen ===' && javap -p net/minecraft/client/gui/screen/ingame/InventoryScreen.class && echo '=== AbstractInventoryScreen ===' && javap -p net/minecraft/client/gui/screen/ingame/AbstractInventoryScreen.class",
+            "problemMatcher": []
+        },
+        {
             "label": "inspect-textfield",
             "type": "shell",
             "command": "cd /tmp && jar xf /workspaces/EasierChests/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-6dd721cd7d/1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/minecraft-merged-6dd721cd7d-1.21.11-net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2.jar net/minecraft/client/gui/widget/TextFieldWidget.class net/minecraft/client/gui/widget/ClickableWidget.class 2>&1 && echo '=== TextFieldWidget ===' && javap -p net/minecraft/client/gui/widget/TextFieldWidget.class | grep -E 'isActive|isFocused|setFocused|mouseClicked|charTyped|keyPressed|canEdit|isEditable' && echo '=== ClickableWidget ===' && javap -p net/minecraft/client/gui/widget/ClickableWidget.class | grep -E 'isActive|isFocused|setFocused|mouseClicked'",

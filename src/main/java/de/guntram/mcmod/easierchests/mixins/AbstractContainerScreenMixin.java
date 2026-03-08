@@ -130,7 +130,7 @@ public abstract class AbstractContainerScreenMixin extends Screen implements Slo
         }
     }
 
-    @Inject(method="render", at=@At("RETURN"))
+    @Inject(method="renderMain", at=@At("RETURN"))
     public void EasierChests$renderSpecialButtons(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         Screen me = this;
         HandledScreen acScreen = (HandledScreen) me;

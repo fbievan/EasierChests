@@ -255,6 +255,10 @@ public class ExtendedGuiChest extends HandledScreen
         return super.charTyped(input);
     }
     
+    public String getSearchText() {
+        return (ConfigurationHandler.enableSearch() && searchWidget != null) ? searchWidget.getText() : "";
+    }
+
     @Override
     public void close() {
         searchText=searchWidget.getText();
@@ -390,7 +394,11 @@ public class ExtendedGuiChest extends HandledScreen
     }
     
     public static void moveMatchingItems(HandledScreen screen, boolean isChestToPlayer) {
-        // System.out.println("move matching from "+(isChest ? "chest" : "player"));
+        String searchFilter = "";
+        if (screen instanceof ExtendedGuiChest) {
+            searchFilter = ((ExtendedGuiChest) screen).getSearchText().toLowerCase();
+        }
+
         Inventory from, to;
         int fromSize, toSize;
         MinecraftClient minecraft = MinecraftClient.getInstance();
@@ -412,17 +420,25 @@ public class ExtendedGuiChest extends HandledScreen
             if (!isChestToPlayer && !hasShiftDown() && FrozenSlotDatabase.isSlotFrozen(i))
                 continue;
             ItemStack fromStack = from.getStack(i);
+            if (fromStack.getItem() == Items.AIR) continue;
             int slot;
             if (isChestToPlayer) {
                 slot=i;
             } else  {
                 slot=((SlotClicker)screen).EasierChests$slotIndexfromPlayerInventoryIndex(i);
             }
-            for (int j=0; j<toSize; j++) {
-                ItemStack toStack = to.getStack(j);
-                if (ItemStack.areItemsAndComponentsEqual(fromStack, toStack)) {
-                    // System.out.println("  from["+i+"] is same as to["+j+"] ("+toStack.getDisplayName()+"), clicking "+slot);
+            if (!searchFilter.isEmpty()) {
+                // Search mode: move items whose name matches the active search text
+                if (fromStack.getItem().getName().getString().toLowerCase().contains(searchFilter)) {
                     ((SlotClicker)screen).EasierChests$onMouseClick(null, slot, 0, SlotActionType.QUICK_MOVE);
+                }
+            } else {
+                // Default: move items that have a matching counterpart in the destination
+                for (int j=0; j<toSize; j++) {
+                    ItemStack toStack = to.getStack(j);
+                    if (ItemStack.areItemsAndComponentsEqual(fromStack, toStack)) {
+                        ((SlotClicker)screen).EasierChests$onMouseClick(null, slot, 0, SlotActionType.QUICK_MOVE);
+                    }
                 }
             }
         }
