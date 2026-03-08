@@ -188,8 +188,12 @@ public class ExtendedGuiChest extends HandledScreen
         double mouseX = click.x();
         double mouseY = click.y();
         int mouseButton = click.button();
-        if (ConfigurationHandler.enableSearch() && searchWidget.mouseClicked(click, handled)) {
-            return true;
+        if (ConfigurationHandler.enableSearch()) {
+            boolean clickedOnWidget = searchWidget.mouseClicked(click, handled);
+            searchWidget.setFocused(clickedOnWidget);
+            if (clickedOnWidget) {
+                return true;
+            }
         }
         super.mouseClicked(click, handled);
         if (mouseButton==0) {
