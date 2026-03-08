@@ -44,6 +44,12 @@
             "problemMatcher": []
         },
         {
+            "label": "lookup-intermediary-classes",
+            "type": "shell",
+            "command": "grep -E 'class_9095|class_9147' /home/codespace/.gradle/caches/fabric-loom/1.21.11/net.fabricmc.yarn.1_21_11.1.21.11+build.1-v2/mappings.tiny | head -20",
+            "problemMatcher": []
+        },
+        {
             "label": "find-mappings2",
             "type": "shell",
             "command": "find /workspaces/EasierChests/.gradle -name '*.tiny' 2>/dev/null | head -5 && find /home/codespace/.gradle -name '*.tiny' 2>/dev/null | head -5 && find /workspaces/EasierChests/.gradle/loom-cache -type f -name '*.jar' | head -20",
