@@ -6,3 +6,5 @@ I am not responsible for any damage caused to your computer :3.
 
 
 BRONIES ARISE :D
+
+feel free to submit [issues](https://github.com/fbievan/EasierChests/issues), and i might fix them sometime...
